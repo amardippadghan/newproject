@@ -1,6 +1,8 @@
+import '@radix-ui/themes/styles.css';
 import NavBar from './NavBar'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import { Theme } from '@radix-ui/themes';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,10 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Theme>
         <NavBar/>
-        <main>
+        <main className='p-5'>
         {children}
         </main>
+
+        </Theme>
+        
         
         
        </body>
