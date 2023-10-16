@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { createIssueSchema } from '@/app/validationSchema';
 import {z} from 'zod'
 import ErrorMessage from '@/app/components/errorMessage';
+import Spinner from '@/app/components/Spinner';
 
 
 type issueForm = z.infer<typeof createIssueSchema>
@@ -19,6 +20,7 @@ type issueForm = z.infer<typeof createIssueSchema>
 const NewIssuePage = () => {
    const route =  useRouter();
    const [error , seterror] = useState('');
+   const [isSubmitting , setsubmitting] = useState(false)
    const {register , control , handleSubmit , formState:{
     errors
    }} = useForm<issueForm>({
@@ -40,11 +42,13 @@ const NewIssuePage = () => {
             <form className=' space-y-3' onSubmit={handleSubmit( async(data)=>{
 
 try {
+    setsubmitting(true)
   await axios.post('/api/issue' , data)
   route.push('/issue')
   
 } catch (error) {
   seterror('unexpected error occured ')
+  setsubmitting(false)
   
 }
 
@@ -79,7 +83,9 @@ try {
  
     
 
-  <Button>Submit new issue</Button>
+  <Button
+  disabled={isSubmitting}
+  >Submit new issue {isSubmitting && <Spinner/>}</Button>
 
 </form>
     </div>
